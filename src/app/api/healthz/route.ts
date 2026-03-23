@@ -20,27 +20,28 @@ export async function GET() {
   const modelPath = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
   info.model_fs_exists = fs.existsSync(modelPath);
 
-  // 2. Try loading onnxruntime-node
+  // 2. Try loading onnxruntime-web (WASM — what inference routes now use)
   try {
-    const ort = await import('onnxruntime-node');
-    info.ort_node_loaded = true;
-    info.ort_node_version = (ort as any).env?.versions?.node ?? 'unknown';
-  } catch (e) {
-    info.ort_node_loaded = false;
-    info.ort_node_error = String(e);
-  }
+    const ort = await import('onnxruntime-web');
+    ort.env.wasm.numThreads = 1;
+    ort.env.wasm.wasmPaths  = path.join(process.cwd(), 'node_modules', 'onnxruntime-web', 'dist') + '/';
+    info.ort_web_loaded = true;
 
-  // 3. If model not on FS and VERCEL_URL present, test the CDN fetch
-  if (!info.model_fs_exists && process.env.VERCEL_URL) {
-    try {
-      const url = `https://${process.env.VERCEL_URL}/hierarchical_moderator.onnx`;
-      const res = await fetch(url, { method: 'HEAD' });
-      info.model_cdn_url = url;
-      info.model_cdn_status = res.status;
-      info.model_cdn_ok = res.ok;
-    } catch (e) {
-      info.model_cdn_error = String(e);
+    // Try actually creating a session if model is present
+    if (info.model_fs_exists) {
+      try {
+        const session = await ort.InferenceSession.create(modelPath);
+        info.ort_web_session = true;
+        info.ort_web_inputs  = session.inputNames;
+        info.ort_web_outputs = session.outputNames;
+      } catch (e) {
+        info.ort_web_session = false;
+        info.ort_web_session_error = String(e);
+      }
     }
+  } catch (e) {
+    info.ort_web_loaded = false;
+    info.ort_web_error = String(e);
   }
 
   return NextResponse.json(info);
