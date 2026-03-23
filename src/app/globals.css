@@ -3,9 +3,11 @@
 
 /* ── Base ──────────────────────────────────────────────────────────────────── */
 body {
-  background-color: #000;
-  color: #fff;
+  background-color: #060d09;          /* dark green-tinted black */
+  color: #d4e8da;                     /* warm green-white for better contrast */
   font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 /* ── Keyframes ─────────────────────────────────────────────────────────────── */
@@ -28,6 +30,11 @@ body {
   from { width: 0%; }
 }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
 /* ── Animation utilities ───────────────────────────────────────────────────── */
 @layer utilities {
   .animate-pulse-dot {
@@ -42,6 +49,9 @@ body {
   .animate-bar-grow {
     animation: bar-grow 1s cubic-bezier(0.4, 0, 0.2, 1) both;
   }
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
 
   /* Stagger delays */
   .delay-100 { animation-delay: 0.1s; }
@@ -49,16 +59,21 @@ body {
   .delay-300 { animation-delay: 0.3s; }
   .delay-400 { animation-delay: 0.4s; }
 
-  /* Card hover */
+  /* Card — stronger border + glow on hover */
   .card {
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
   .card:hover {
-    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.15), 0 0 24px rgba(16, 185, 129, 0.06);
+    border-color: rgba(16, 185, 129, 0.35) !important;
+    box-shadow:
+      0 0 0 1px rgba(16, 185, 129, 0.12),
+      0 4px 32px rgba(16, 185, 129, 0.10),
+      inset 0 0 24px rgba(16, 185, 129, 0.03);
   }
 }
 
 /* ── Scrollbar ─────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar       { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1e3a2f; border-radius: 2px; }
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: #0a130d; }
+::-webkit-scrollbar-thumb { background: #1a4030; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #22563f; }

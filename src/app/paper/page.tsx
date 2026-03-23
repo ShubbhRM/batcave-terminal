@@ -57,9 +57,9 @@ function EquityCurve({ snapshots, startCapital }: {
 }) {
   if (snapshots.length < 2) {
     return (
-      <div className="flex flex-col items-center justify-center h-48 gap-3 text-emerald-900">
+      <div className="flex flex-col items-center justify-center h-48 gap-3 text-emerald-700">
         <Activity className="w-8 h-8 opacity-30" />
-        <span className="text-xs tracking-widest uppercase">
+        <span className="text-sm tracking-widest uppercase">
           Awaiting Snapshots — Hit Update Now To Begin Recording
         </span>
       </div>
@@ -193,13 +193,13 @@ function MetricCard({ label, value, sub, positive, neutral = false }: {
 }) {
   const color = neutral ? '#10b981' : positive ? '#10b981' : '#ef4444';
   return (
-    <div className="border border-emerald-900/30 bg-black rounded-lg p-5 card-tactical animate-slide-up">
-      <div className="text-xs tracking-[0.18em] uppercase text-emerald-900 mb-3">{label}</div>
+    <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg p-5 card-tactical animate-slide-up">
+      <div className="text-xs tracking-[0.18em] uppercase text-emerald-700 mb-3">{label}</div>
       <div className="text-3xl font-bold tabular-nums leading-none"
         style={{ color, textShadow: `0 0 18px ${color}40` }}>
         {value}
       </div>
-      {sub && <div className="text-xs text-emerald-900 mt-2">{sub}</div>}
+      {sub && <div className="text-sm text-emerald-700 mt-2">{sub}</div>}
     </div>
   );
 }
@@ -310,7 +310,7 @@ export default function PaperPage() {
 
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-black text-emerald-400 font-mono selection:bg-emerald-900 selection:text-emerald-300 scanlines bg-grid relative">
+    <div className="min-h-screen bg-[#060d09] text-emerald-400 font-mono selection:bg-emerald-900 selection:text-emerald-300 scanlines bg-grid relative">
 
       {/* Scan line */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-40">
@@ -320,29 +320,29 @@ export default function PaperPage() {
       <div className="relative z-10 p-8">
 
         {/* ── Header ─────────────────────────────────────────────────────── */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-emerald-900/30 pb-7 mb-10 gap-5">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-emerald-800/40 pb-7 mb-10 gap-5">
           <div className="animate-slide-up">
             <div className="flex items-center gap-3 mb-1">
               <ShieldAlert className="w-7 h-7 text-emerald-400 animate-glow-pulse" />
               <h1 className="text-2xl font-bold tracking-[0.05em] text-emerald-300 glow-emerald animate-flicker">
                 PAPER EVAL
               </h1>
-              <span className="text-xs border border-emerald-700/40 px-2 py-0.5 rounded text-emerald-700">
+              <span className="text-xs border border-emerald-700/40 px-2 py-0.5 rounded text-emerald-500">
                 LIVE DATA
               </span>
             </div>
-            <p className="text-emerald-900 text-xs tracking-[0.25em] uppercase pl-10">
+            <p className="text-emerald-700 text-xs tracking-[0.25em] uppercase pl-10">
               Forward Evaluation // Real Market Prices // No Real Orders
             </p>
           </div>
 
           <div className="flex flex-wrap gap-3 items-center animate-slide-up delay-100">
             <a href="/"
-              className="flex items-center gap-2 border border-emerald-900/40 bg-emerald-950/20 px-3 py-2 rounded text-xs text-emerald-700 hover:text-emerald-300 hover:border-emerald-700 transition-colors">
+              className="flex items-center gap-2 border border-emerald-900/40 bg-emerald-950/20 px-3 py-2 rounded text-sm text-emerald-500 hover:text-emerald-300 hover:border-emerald-700 transition-colors">
               <ChevronLeft className="w-3.5 h-3.5" /> DASHBOARD
             </a>
             <a href="/simulate"
-              className="flex items-center gap-2 border border-emerald-900/40 bg-emerald-950/20 px-3 py-2 rounded text-xs text-emerald-700 hover:text-emerald-300 hover:border-emerald-700 transition-colors">
+              className="flex items-center gap-2 border border-emerald-900/40 bg-emerald-950/20 px-3 py-2 rounded text-sm text-emerald-500 hover:text-emerald-300 hover:border-emerald-700 transition-colors">
               <BarChart2 className="w-3.5 h-3.5" /> SIMULATOR
             </a>
 
@@ -354,7 +354,7 @@ export default function PaperPage() {
                   {updating ? 'UPDATING...' : 'UPDATE NOW'}
                 </button>
                 <button onClick={() => setShowInit(true)}
-                  className="flex items-center gap-2 border border-emerald-900/40 bg-emerald-950/20 px-3 py-2 rounded text-xs text-emerald-700 hover:text-emerald-300 transition-colors">
+                  className="flex items-center gap-2 border border-emerald-900/40 bg-emerald-950/20 px-3 py-2 rounded text-sm text-emerald-500 hover:text-emerald-300 transition-colors">
                   <Play className="w-3.5 h-3.5" /> NEW SESSION
                 </button>
               </>
@@ -364,44 +364,44 @@ export default function PaperPage() {
 
         {/* Status message */}
         {statusMsg && (
-          <div className="mb-6 px-4 py-2.5 border border-emerald-800/40 bg-emerald-950/20 rounded text-xs text-emerald-500 animate-slide-up flex items-center gap-2">
+          <div className="mb-6 px-4 py-2.5 border border-emerald-800/40 bg-emerald-950/20 rounded text-sm text-emerald-500 animate-slide-up flex items-center gap-2">
             <Zap className="w-3 h-3 shrink-0" /> {statusMsg}
           </div>
         )}
 
         {/* ── Loading ─────────────────────────────────────────────────────── */}
         {loading ? (
-          <div className="flex justify-center items-center h-64 border border-emerald-900/20 bg-emerald-950/5 rounded-lg flex-col gap-4 text-emerald-800">
-            <Activity className="w-8 h-8 animate-spin text-emerald-700" />
-            <div className="text-xs tracking-widest uppercase cursor">LOADING SESSION DATA</div>
+          <div className="flex justify-center items-center h-64 border border-emerald-900/20 bg-emerald-950/10 rounded-lg flex-col gap-4 text-emerald-600">
+            <Activity className="w-8 h-8 animate-spin text-emerald-500" />
+            <div className="text-sm tracking-widest uppercase cursor">LOADING SESSION DATA</div>
           </div>
 
         ) : showInit ? (
           // ── Init / New Session form ────────────────────────────────────────
           <div className="max-w-lg mx-auto animate-slide-up">
             <div className="border border-emerald-800/40 bg-emerald-950/10 rounded-xl p-8">
-              <div className="text-xs tracking-[0.2em] uppercase text-emerald-700 mb-6">
+              <div className="text-xs tracking-[0.2em] uppercase text-emerald-500 mb-6">
                 INITIALISE SESSION
               </div>
               <form onSubmit={handleInit} className="space-y-5">
                 <div>
-                  <label className="block text-xs text-emerald-800 mb-2 tracking-widest uppercase">
+                  <label className="block text-sm text-emerald-600 mb-2 tracking-widest uppercase">
                     Starting Capital ($)
                   </label>
                   <input
                     type="number" value={capital} onChange={e => setCapital(e.target.value)}
-                    className="w-full bg-black border border-emerald-900/40 rounded px-4 py-3 text-emerald-300 text-sm focus:outline-none focus:border-emerald-600 transition-colors"
+                    className="w-full bg-[#060d09] border border-emerald-900/40 rounded px-4 py-3 text-emerald-300 text-sm focus:outline-none focus:border-emerald-600 transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-emerald-800 mb-2 tracking-widest uppercase">
+                  <label className="block text-sm text-emerald-600 mb-2 tracking-widest uppercase">
                     Assets (comma-separated, max 5)
                   </label>
                   <input
                     type="text" value={assets} onChange={e => setAssets(e.target.value)}
-                    className="w-full bg-black border border-emerald-900/40 rounded px-4 py-3 text-emerald-300 text-sm focus:outline-none focus:border-emerald-600 transition-colors"
+                    className="w-full bg-[#060d09] border border-emerald-900/40 rounded px-4 py-3 text-emerald-300 text-sm focus:outline-none focus:border-emerald-600 transition-colors"
                   />
-                  <p className="text-xs text-emerald-900 mt-2">
+                  <p className="text-sm text-emerald-700 mt-2">
                     Yahoo Finance tickers, e.g. SPY, QQQ, AAPL, TSLA, BTC-USD
                   </p>
                 </div>
@@ -413,7 +413,7 @@ export default function PaperPage() {
                   </button>
                   {data?.active && (
                     <button type="button" onClick={() => setShowInit(false)}
-                      className="px-4 py-3 border border-emerald-900/30 rounded text-emerald-800 text-sm hover:text-emerald-600 transition-colors">
+                      className="px-4 py-3 border border-emerald-800/40 rounded text-emerald-600 text-sm hover:text-emerald-600 transition-colors">
                       CANCEL
                     </button>
                   )}
@@ -421,7 +421,7 @@ export default function PaperPage() {
               </form>
             </div>
 
-            <div className="mt-6 border border-amber-900/30 bg-amber-950/10 rounded-lg px-4 py-3 text-xs text-amber-700 flex items-start gap-2">
+            <div className="mt-6 border border-amber-900/30 bg-amber-950/10 rounded-lg px-4 py-3 text-sm text-amber-700 flex items-start gap-2">
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
               <span>
                 Starting a new session <strong className="text-amber-500">replaces</strong> any existing
@@ -436,23 +436,23 @@ export default function PaperPage() {
           <div className="space-y-6">
 
             {/* Session info bar */}
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-emerald-800 animate-slide-up items-center">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-emerald-600 animate-slide-up items-center">
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3 h-3" />
                 Started: <span className="text-emerald-600 ml-1">{fmtDate(data.startDate)}</span>
               </span>
-              <span className="text-emerald-900">·</span>
+              <span className="text-emerald-700">·</span>
               <span>
                 Capital: <span className="text-emerald-600">${fmt(data.startCapital)}</span>
               </span>
-              <span className="text-emerald-900">·</span>
+              <span className="text-emerald-700">·</span>
               <span>
                 Last Update:{' '}
                 <span className="text-emerald-600">
                   {data.lastUpdate ? fmtTime(data.lastUpdate) : 'Never'}
                 </span>
               </span>
-              <span className="text-emerald-900">·</span>
+              <span className="text-emerald-700">·</span>
               <span>
                 Snapshots: <span className="text-emerald-600">{data.snapshots.length}</span>
               </span>
@@ -500,10 +500,10 @@ export default function PaperPage() {
             </div>
 
             {/* ── Equity Curve ─────────────────────────────────────────────── */}
-            <div className="border border-emerald-900/30 bg-black rounded-xl p-6 card-tactical animate-slide-up delay-100">
+            <div className="border border-emerald-800/40 bg-[#060d09] rounded-xl p-7 card-tactical animate-slide-up delay-100">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <div className="text-xs tracking-[0.2em] uppercase text-emerald-800 mb-1">
+                  <div className="text-xs tracking-[0.2em] uppercase text-emerald-600 mb-1">
                     EQUITY CURVE
                   </div>
                   <div className="flex items-baseline gap-3">
@@ -518,7 +518,7 @@ export default function PaperPage() {
                     </span>
                   </div>
                 </div>
-                <div className="text-right text-xs text-emerald-900 space-y-1">
+                <div className="text-right text-sm text-emerald-700 space-y-1">
                   <div className="flex items-center justify-end gap-2">
                     <span className="inline-block w-5 h-0.5 bg-emerald-400 rounded" />
                     <span>Portfolio</span>
@@ -536,8 +536,8 @@ export default function PaperPage() {
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
 
               {/* Current positions */}
-              <div className="border border-emerald-900/30 bg-black rounded-xl p-6 card-tactical animate-slide-up delay-200">
-                <div className="text-xs tracking-[0.2em] uppercase text-emerald-800 mb-5">
+              <div className="border border-emerald-800/40 bg-[#060d09] rounded-xl p-7 card-tactical animate-slide-up delay-200">
+                <div className="text-xs tracking-[0.2em] uppercase text-emerald-600 mb-5">
                   CURRENT POSITIONS
                 </div>
                 <div className="space-y-1">
@@ -559,7 +559,7 @@ export default function PaperPage() {
                           <div className="w-1 h-9 rounded-full shrink-0" style={{ backgroundColor: rc }} />
                           <div>
                             <div className="text-sm font-bold text-emerald-300">{sym}</div>
-                            <div className="text-xs text-emerald-800">
+                            <div className="text-sm text-emerald-600">
                               {(h?.shares ?? 0).toFixed(4)} sh · ${fmt(price)}
                             </div>
                           </div>
@@ -580,8 +580,8 @@ export default function PaperPage() {
                   })}
 
                   {/* Portfolio total row */}
-                  <div className="flex items-center justify-between pt-3 mt-1 border-t border-emerald-900/30">
-                    <span className="text-xs tracking-widest text-emerald-800 uppercase">TOTAL</span>
+                  <div className="flex items-center justify-between pt-3 mt-1 border-t border-emerald-800/40">
+                    <span className="text-sm tracking-widest text-emerald-600 uppercase">TOTAL</span>
                     <div className="text-right">
                       <div className="text-base font-bold tabular-nums text-emerald-300">
                         ${fmt(data.live.portfolioValue)}
@@ -598,18 +598,18 @@ export default function PaperPage() {
               </div>
 
               {/* Trade log */}
-              <div className="border border-emerald-900/30 bg-black rounded-xl p-6 card-tactical animate-slide-up delay-300">
-                <div className="text-xs tracking-[0.2em] uppercase text-emerald-800 mb-5 flex items-baseline gap-2">
+              <div className="border border-emerald-800/40 bg-[#060d09] rounded-xl p-7 card-tactical animate-slide-up delay-300">
+                <div className="text-xs tracking-[0.2em] uppercase text-emerald-600 mb-5 flex items-baseline gap-2">
                   TRADE LOG
-                  <span className="text-emerald-900 font-normal normal-case">
+                  <span className="text-emerald-700 font-normal normal-case">
                     ({data.trades.length} total)
                   </span>
                 </div>
 
                 {data.trades.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center h-40 gap-3 text-emerald-900">
+                  <div className="flex flex-col items-center justify-center h-40 gap-3 text-emerald-700">
                     <Activity className="w-7 h-7 opacity-30" />
-                    <span className="text-xs tracking-widest">
+                    <span className="text-sm tracking-widest">
                       No trades yet — hit Update Now to run first inference
                     </span>
                   </div>
@@ -629,13 +629,13 @@ export default function PaperPage() {
                               {t.action}
                             </span>
                             <span className="text-emerald-300 shrink-0">{t.asset}</span>
-                            <span className="text-emerald-900 truncate">
+                            <span className="text-emerald-700 truncate">
                               {t.shares.toFixed(4)} sh
                             </span>
                           </div>
                           <div className="flex items-center gap-3 shrink-0 ml-2">
-                            <span className="text-emerald-700">${fmt(t.price)}</span>
-                            <span className="text-emerald-900 w-20 text-right">
+                            <span className="text-emerald-500">${fmt(t.price)}</span>
+                            <span className="text-emerald-700 w-20 text-right">
                               {new Date(t.date).toLocaleDateString('en-US', {
                                 month: 'short', day: 'numeric',
                               })}
@@ -652,7 +652,7 @@ export default function PaperPage() {
         ) : null}
 
         {/* ── Footer ─────────────────────────────────────────────────────── */}
-        <footer className="mt-20 border-t border-emerald-900/20 pt-6 text-xs text-emerald-900/60 flex justify-between items-center">
+        <footer className="mt-20 border-t border-emerald-900/20 pt-6 text-sm text-emerald-700/60 flex justify-between items-center">
           <span>BATCAVE TERMINAL v5.0 // PAPER EVAL ENGINE // FORWARD INFERENCE</span>
           <span className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-700 animate-pulse-dot" />

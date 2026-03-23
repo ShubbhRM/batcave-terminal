@@ -42,12 +42,12 @@ function ArcGauge({ value, color }: { value: number; color: string }) {
           filter: `drop-shadow(0 0 5px ${color}80)`,
           transition: 'stroke-dasharray 1.1s cubic-bezier(0.4,0,0.2,1)',
         }} />
-      <text x={cx} y={cy - 5} textAnchor="middle" fontSize="15" fontWeight="700"
+      <text x={cx} y={cy - 5} textAnchor="middle" fontSize="17" fontWeight="700"
         fill={color} fontFamily="var(--font-geist-mono)" dominantBaseline="middle">
         {(value * 100).toFixed(0)}
       </text>
-      <text x={cx} y={cy + 11} textAnchor="middle" fontSize="9"
-        fill={color} fontFamily="var(--font-geist-mono)" opacity="0.55">%</text>
+      <text x={cx} y={cy + 12} textAnchor="middle" fontSize="11"
+        fill={color} fontFamily="var(--font-geist-mono)" opacity="0.65">%</text>
     </svg>
   );
 }
@@ -88,31 +88,31 @@ function ExpertCard({
   const { label, color, Icon, desc } = expert;
   return (
     <div
-      className="card animate-slide-up rounded-xl border border-slate-800 bg-slate-950 p-6 flex flex-col gap-4"
+      className="card animate-slide-up rounded-xl border border-slate-700/60 bg-[#080f0a] p-7 flex flex-col gap-5"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="flex items-start justify-between">
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Icon className="w-3.5 h-3.5" style={{ color }} />
-            <span className="text-xs tracking-widest uppercase" style={{ color: `${color}88` }}>
+          <div className="flex items-center gap-2 mb-3">
+            <Icon className="w-4 h-4" style={{ color }} />
+            <span className="text-sm tracking-widest uppercase" style={{ color: `${color}aa` }}>
               {label}
             </span>
           </div>
           <div className="text-5xl font-bold font-mono tabular-nums leading-none"
-            style={{ color, textShadow: `0 0 24px ${color}40` }}>
-            {(value * 100).toFixed(1)}<span className="text-2xl opacity-40">%</span>
+            style={{ color, textShadow: `0 0 28px ${color}55` }}>
+            {(value * 100).toFixed(1)}<span className="text-2xl opacity-50">%</span>
           </div>
         </div>
         <ArcGauge value={value} color={color} />
       </div>
 
-      <div className="h-0.5 rounded-full bg-slate-800 overflow-hidden">
+      <div className="h-2 rounded-full bg-slate-800/80 overflow-hidden">
         <div className="h-full rounded-full animate-bar-grow"
-          style={{ width: `${value * 100}%`, backgroundColor: color, boxShadow: `0 0 6px ${color}` }} />
+          style={{ width: `${value * 100}%`, backgroundColor: color, boxShadow: `0 0 8px ${color}` }} />
       </div>
 
-      <p className="text-xs leading-relaxed text-slate-600">{desc}</p>
+      <p className="text-sm leading-relaxed text-slate-400">{desc}</p>
     </div>
   );
 }
@@ -126,14 +126,14 @@ function RegimeBadge({ weights }: { weights: SignalData['weights'] }) {
     volume:        'Watch OBV divergence',
   };
   return (
-    <div className="flex items-center gap-3 px-4 py-3 rounded-lg border"
-      style={{ borderColor: `${dom.color}22`, backgroundColor: `${dom.color}08` }}>
-      <span className="w-2 h-2 rounded-full shrink-0 animate-pulse-dot"
-        style={{ backgroundColor: dom.color }} />
+    <div className="flex items-center gap-3 px-5 py-4 rounded-lg border"
+      style={{ borderColor: `${dom.color}30`, backgroundColor: `${dom.color}0d` }}>
+      <span className="w-2.5 h-2.5 rounded-full shrink-0 animate-pulse-dot"
+        style={{ backgroundColor: dom.color, boxShadow: `0 0 8px ${dom.color}` }} />
       <div>
-        <div className="text-xs tracking-widest uppercase mb-0.5"
-          style={{ color: `${dom.color}77` }}>Active Regime</div>
-        <div className="text-sm font-bold" style={{ color: dom.color }}>
+        <div className="text-xs tracking-widest uppercase mb-1"
+          style={{ color: `${dom.color}88` }}>Active Regime</div>
+        <div className="text-base font-bold" style={{ color: dom.color }}>
           {dom.label.toUpperCase()} — {actionMap[dom.key]}
         </div>
       </div>
@@ -144,26 +144,26 @@ function RegimeBadge({ weights }: { weights: SignalData['weights'] }) {
 // ─── Allocation bars ──────────────────────────────────────────────────────────
 function AllocationBars({ weights }: { weights: SignalData['weights'] }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {EXPERTS.map(e => (
         <div key={e.key}>
-          <div className="flex justify-between items-center mb-1.5">
+          <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
-              <e.Icon className="w-3 h-3" style={{ color: e.color }} />
-              <span className="text-xs tracking-wide" style={{ color: `${e.color}99` }}>
+              <e.Icon className="w-3.5 h-3.5" style={{ color: e.color }} />
+              <span className="text-sm tracking-wide" style={{ color: `${e.color}bb` }}>
                 {e.label.toUpperCase()}
               </span>
             </div>
-            <span className="text-xs font-bold font-mono tabular-nums" style={{ color: e.color }}>
+            <span className="text-sm font-bold font-mono tabular-nums" style={{ color: e.color }}>
               {(weights[e.key] * 100).toFixed(1)}%
             </span>
           </div>
-          <div className="h-1.5 rounded-full bg-slate-800 overflow-hidden">
+          <div className="h-2 rounded-full bg-slate-800/80 overflow-hidden">
             <div className="h-full rounded-full animate-bar-grow"
               style={{
                 width: `${weights[e.key] * 100}%`,
                 backgroundColor: e.color,
-                boxShadow: `0 0 8px ${e.color}60`,
+                boxShadow: `0 0 10px ${e.color}70`,
               }} />
           </div>
         </div>
@@ -214,28 +214,29 @@ export default function Dashboard() {
   const isOOD = data && !['SPY', 'QQQ', 'TLT', 'GLD', 'IWM'].includes(data.symbol);
 
   const gridBg: React.CSSProperties = {
-    backgroundImage: 'radial-gradient(circle, rgba(16,185,129,0.055) 1px, transparent 1px)',
+    backgroundImage: 'radial-gradient(circle, rgba(16,185,129,0.09) 1px, transparent 1px)',
     backgroundSize:  '28px 28px',
   };
 
   return (
     <div className="min-h-screen bg-black text-white" style={gridBg}>
-      <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-8 py-10">
 
         {/* ── Header ─────────────────────────────────────────────────────── */}
-        <header className="flex flex-wrap gap-4 justify-between items-center pb-8 mb-10 border-b border-slate-800 animate-slide-up">
+        <header className="flex flex-wrap gap-4 justify-between items-center pb-8 mb-10 border-b border-slate-700/50 animate-slide-up">
           <div className="flex items-center gap-3">
-            <ShieldAlert className="w-6 h-6 text-emerald-400" />
+            <ShieldAlert className="w-7 h-7 text-emerald-300" />
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold tracking-wide text-emerald-400">
+              <div className="flex items-center gap-2.5">
+                <span className="text-xl font-bold tracking-wide text-emerald-300"
+                  style={{ textShadow: '0 0 20px rgba(52,211,153,0.4)' }}>
                   BATCAVE TERMINAL
                 </span>
-                <span className="text-xs border border-slate-700 px-1.5 py-0.5 rounded text-slate-500">
+                <span className="text-xs border border-slate-600 px-2 py-0.5 rounded text-slate-400">
                   v5.0
                 </span>
               </div>
-              <div className="text-xs text-slate-600 tracking-widest mt-0.5">
+              <div className="text-xs text-slate-500 tracking-widest mt-1">
                 HIERARCHICAL RL · 3-EXPERT LSTM ENSEMBLE · ONNX
               </div>
             </div>
@@ -247,7 +248,7 @@ export default function Dashboard() {
                 type="text" value={searchVal}
                 onChange={e => setSearchVal(e.target.value)}
                 placeholder="Ticker…"
-                className="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 pr-9 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-emerald-700 transition-colors w-36"
+                className="bg-slate-900/80 border border-slate-600 rounded-lg px-4 py-2.5 pr-9 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-600 transition-colors w-36"
               />
               <button type="submit"
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-emerald-400 transition-colors">
@@ -256,23 +257,23 @@ export default function Dashboard() {
             </form>
 
             <a href="/simulate"
-              className="flex items-center gap-1.5 border border-slate-700 bg-slate-900 px-3 py-2 rounded-lg text-xs text-slate-400 hover:text-emerald-400 hover:border-slate-600 transition-colors">
+              className="flex items-center gap-1.5 border border-slate-600 bg-slate-900/80 px-4 py-2.5 rounded-lg text-sm text-slate-400 hover:text-emerald-300 hover:border-emerald-800 transition-colors">
               <BarChart2 className="w-3.5 h-3.5" /> SIMULATOR
             </a>
 
             <a href="/paper"
-              className="flex items-center gap-1.5 border border-slate-700 bg-slate-900 px-3 py-2 rounded-lg text-xs text-slate-400 hover:text-emerald-400 hover:border-slate-600 transition-colors">
+              className="flex items-center gap-1.5 border border-slate-600 bg-slate-900/80 px-4 py-2.5 rounded-lg text-sm text-slate-400 hover:text-emerald-300 hover:border-emerald-800 transition-colors">
               <Activity className="w-3.5 h-3.5" /> PAPER EVAL
             </a>
 
             <div className={clsx(
-              'flex items-center gap-2 px-3 py-2 rounded-lg border text-xs',
+              'flex items-center gap-2 px-4 py-2.5 rounded-lg border text-sm',
               data?.marketOpen
-                ? 'border-emerald-900 bg-emerald-950/40 text-emerald-400'
-                : 'border-slate-800 bg-slate-900 text-slate-500',
+                ? 'border-emerald-800 bg-emerald-950/50 text-emerald-300'
+                : 'border-slate-700 bg-slate-900/80 text-slate-400',
             )}>
               <span className={clsx(
-                'w-1.5 h-1.5 rounded-full',
+                'w-2 h-2 rounded-full',
                 data?.marketOpen ? 'bg-emerald-400 animate-pulse-dot' : 'bg-slate-600',
               )} />
               NYSE {data?.marketOpen ? 'OPEN' : 'CLOSED'}
@@ -286,8 +287,8 @@ export default function Dashboard() {
 
         {/* ── OOD warning ────────────────────────────────────────────────── */}
         {isOOD && (
-          <div className="flex items-start gap-3 border border-amber-900/40 bg-amber-950/20 rounded-lg px-4 py-3 mb-8 text-amber-600 text-xs animate-fade-in">
-            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-500" />
+          <div className="flex items-start gap-3 border border-amber-800/50 bg-amber-950/25 rounded-lg px-5 py-4 mb-8 text-amber-500 text-sm animate-fade-in">
+            <AlertTriangle className="w-4.5 h-4.5 shrink-0 mt-0.5 text-amber-400" />
             Model trained on <strong className="text-amber-400 mx-1">SPY · QQQ · TLT · GLD · IWM</strong>.
             Weights for <strong className="text-amber-400 mx-1">{data?.symbol}</strong> are extrapolated — indicative only.
           </div>
@@ -295,23 +296,23 @@ export default function Dashboard() {
 
         {/* ── States ─────────────────────────────────────────────────────── */}
         {error ? (
-          <div className="flex flex-col items-center justify-center h-72 rounded-xl border border-red-900/30 bg-red-950/10 gap-4 text-red-500">
-            <ShieldAlert className="w-10 h-10 opacity-50" />
+          <div className="flex flex-col items-center justify-center h-72 rounded-xl border border-red-800/40 bg-red-950/15 gap-5 text-red-400">
+            <ShieldAlert className="w-12 h-12 opacity-60" />
             <div className="text-center">
-              <div className="text-sm font-bold mb-1">INFERENCE ERROR</div>
-              <div className="text-xs text-red-900 max-w-sm">{error}</div>
+              <div className="text-base font-bold mb-2 tracking-widest">INFERENCE ERROR</div>
+              <div className="text-sm text-red-600 max-w-sm">{error}</div>
             </div>
             <button
               onClick={() => { setLoading(true); fetchSignal(symbol); }}
-              className="text-xs border border-red-900/40 px-3 py-1.5 rounded hover:border-red-700 transition-colors">
+              className="text-sm border border-red-800/50 px-5 py-2 rounded hover:border-red-600 hover:text-red-300 transition-colors">
               RETRY
             </button>
           </div>
 
         ) : loading ? (
-          <div className="flex flex-col items-center justify-center h-72 rounded-xl border border-slate-800 bg-slate-950/50 gap-4 text-slate-600">
-            <Activity className="w-8 h-8 animate-spin" />
-            <div className="text-xs tracking-widest uppercase">
+          <div className="flex flex-col items-center justify-center h-72 rounded-xl border border-slate-700/50 bg-[#080f0a] gap-4 text-slate-400">
+            <Activity className="w-9 h-9 animate-spin text-emerald-700" />
+            <div className="text-sm tracking-widest uppercase">
               Running LSTM Inference — {symbol}
             </div>
           </div>
@@ -320,39 +321,39 @@ export default function Dashboard() {
           <div className="space-y-5 animate-fade-in">
 
             {/* Top row: ticker + allocation */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
               {/* Ticker card */}
-              <div className="card rounded-xl border border-slate-800 bg-slate-950 p-6 animate-slide-up">
-                <div className="text-xs tracking-widest uppercase text-slate-600 mb-4">
+              <div className="card rounded-xl border border-slate-700/60 bg-[#080f0a] p-7 animate-slide-up">
+                <div className="text-xs tracking-widest uppercase text-slate-400 mb-5">
                   Target Asset
                 </div>
-                <div className="text-5xl font-bold tracking-tight mb-2">{data.symbol}</div>
-                <div className="text-3xl font-mono font-bold text-emerald-400 mb-6"
-                  style={{ textShadow: '0 0 20px rgba(16,185,129,0.3)' }}>
+                <div className="text-5xl font-bold tracking-tight mb-3 text-white">{data.symbol}</div>
+                <div className="text-3xl font-mono font-bold text-emerald-300 mb-7"
+                  style={{ textShadow: '0 0 24px rgba(52,211,153,0.35)' }}>
                   ${data.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
-                <div className="space-y-2 border-t border-slate-800/60 pt-4 text-xs text-slate-600">
+                <div className="space-y-3 border-t border-slate-700/40 pt-5 text-sm text-slate-500">
                   <div className="flex justify-between">
                     <span>Engine</span>
-                    <span className="text-slate-400 flex items-center gap-1.5">
-                      <Zap className="w-3 h-3 text-emerald-700" /> LSTM-256
+                    <span className="text-slate-300 flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5 text-emerald-600" /> LSTM-256
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Experts</span>
-                    <span className="text-slate-400">3-expert ensemble</span>
+                    <span className="text-slate-300">3-expert ensemble</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Refresh</span>
-                    <span className="text-slate-400">every 60 s</span>
+                    <span className="text-slate-300">every 60 s</span>
                   </div>
                 </div>
               </div>
 
               {/* Allocation panel */}
-              <div className="card md:col-span-2 rounded-xl border border-slate-800 bg-slate-950 p-6 animate-slide-up delay-100">
-                <div className="text-xs tracking-widest uppercase text-slate-600 mb-6">
+              <div className="card md:col-span-2 rounded-xl border border-slate-700/60 bg-[#080f0a] p-7 animate-slide-up delay-100">
+                <div className="text-xs tracking-widest uppercase text-slate-400 mb-6">
                   Expert Allocation
                 </div>
                 <AllocationBars weights={data.weights} />
@@ -363,7 +364,7 @@ export default function Dashboard() {
             </div>
 
             {/* Expert detail cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {EXPERTS.map((e, i) => (
                 <ExpertCard key={e.key} expert={e} value={data.weights[e.key]} delay={(i + 2) * 100} />
               ))}
@@ -373,10 +374,10 @@ export default function Dashboard() {
         )}
 
         {/* ── Footer ─────────────────────────────────────────────────────── */}
-        <footer className="mt-16 pt-6 border-t border-slate-800 flex flex-wrap justify-between items-center gap-3 text-xs text-slate-700">
+        <footer className="mt-16 pt-6 border-t border-slate-700/40 flex flex-wrap justify-between items-center gap-3 text-sm text-slate-500">
           <span>BATCAVE TERMINAL v5.0 · RecurrentPPO · Sortino Reward · 1M steps</span>
           <span className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-800 animate-pulse-dot" />
+            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse-dot" />
             EDGE NODE ACTIVE
           </span>
         </footer>
