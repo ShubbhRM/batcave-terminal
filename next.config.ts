@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/api/simulate': ['./public/*.onnx'],
     '/api/paper':    ['./public/*.onnx'],
+    '/api/signal':   ['./public/*.onnx'],
   },
 };
 
