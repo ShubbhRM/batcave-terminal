@@ -11,8 +11,18 @@ let _session: ort.InferenceSession | null = null;
 
 async function getOnnxSession(): Promise<ort.InferenceSession> {
   if (!_session) {
-    const modelPath = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
-    _session = await ort.InferenceSession.create(modelPath);
+    // On Vercel the function filesystem doesn't include public/.
+    // The model is always available via the CDN, so fetch it as a buffer instead.
+    if (process.env.VERCEL_URL) {
+      const url = `https://${process.env.VERCEL_URL}/hierarchical_moderator.onnx`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Model fetch failed: ${res.status}`);
+      const buf = await res.arrayBuffer();
+      _session = await ort.InferenceSession.create(new Uint8Array(buf));
+    } else {
+      const modelPath = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
+      _session = await ort.InferenceSession.create(modelPath);
+    }
   }
   return _session;
 }

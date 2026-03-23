@@ -20,8 +20,16 @@ const LOOKBACK    = 60;
 let _session: ort.InferenceSession | null = null;
 async function getSession(): Promise<ort.InferenceSession> {
   if (!_session) {
-    const p = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
-    _session = await ort.InferenceSession.create(p);
+    if (process.env.VERCEL_URL) {
+      const url = `https://${process.env.VERCEL_URL}/hierarchical_moderator.onnx`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Model fetch failed: ${res.status}`);
+      const buf = await res.arrayBuffer();
+      _session = await ort.InferenceSession.create(new Uint8Array(buf));
+    } else {
+      const p = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
+      _session = await ort.InferenceSession.create(p);
+    }
   }
   return _session;
 }
