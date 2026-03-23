@@ -27,7 +27,7 @@ let _session: ort.InferenceSession | null = null;
 async function getSession(): Promise<ort.InferenceSession> {
   if (!_session) {
     const p = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
-    _session = await ort.InferenceSession.create(p);
+    _session = await ort.InferenceSession.create(p, { graphOptimizationLevel: 'disabled' });
   }
   return _session;
 }

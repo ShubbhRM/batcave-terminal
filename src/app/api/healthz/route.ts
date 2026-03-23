@@ -30,7 +30,7 @@ export async function GET() {
     // Try actually creating a session if model is present
     if (info.model_fs_exists) {
       try {
-        const session = await ort.InferenceSession.create(modelPath);
+        const session = await ort.InferenceSession.create(modelPath, { graphOptimizationLevel: 'disabled' });
         info.ort_web_session = true;
         info.ort_web_inputs  = session.inputNames;
         info.ort_web_outputs = session.outputNames;
