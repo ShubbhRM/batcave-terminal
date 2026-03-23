@@ -1,12 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // ── Native Node addons: don't try to webpack-bundle onnxruntime-node ─────────
-  serverExternalPackages: ['onnxruntime-node'],
+  // ── Keep onnxruntime-web external so Vercel bundles its full dist/ dir ────────
+  serverExternalPackages: ['onnxruntime-web'],
 
-  // ── Make the ONNX model file reachable from serverless functions ──────────────
+  // ── Ensure ONNX model + WASM files are included in every function bundle ──────
   outputFileTracingIncludes: {
-    '**': ['./public/*.onnx'],
+    '**': [
+      './public/*.onnx',
+      './node_modules/onnxruntime-web/dist/*.wasm',
+    ],
   },
 };
 

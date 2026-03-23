@@ -11,28 +11,23 @@
  */
 
 import { NextResponse } from 'next/server';
-import * as ort from 'onnxruntime-node';
+import * as ort from 'onnxruntime-web';
 import path from 'path';
 import fs from 'fs';
 
-// Force Node.js runtime (required for onnxruntime-node native bindings)
 export const runtime    = 'nodejs';
-export const maxDuration = 30;         // seconds (Vercel Hobby max)
+export const maxDuration = 30;
+
+// WASM backend — no native .so needed
+ort.env.wasm.numThreads = 1;
+ort.env.wasm.wasmPaths  = path.join(process.cwd(), 'node_modules', 'onnxruntime-web', 'dist') + '/';
 
 // ─── ONNX singleton ───────────────────────────────────────────────────────────
 let _session: ort.InferenceSession | null = null;
 async function getSession(): Promise<ort.InferenceSession> {
   if (!_session) {
-    if (process.env.VERCEL_URL) {
-      const url = `https://${process.env.VERCEL_URL}/hierarchical_moderator.onnx`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`Model fetch failed: ${res.status}`);
-      const buf = await res.arrayBuffer();
-      _session = await ort.InferenceSession.create(new Uint8Array(buf));
-    } else {
-      const p = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
-      _session = await ort.InferenceSession.create(p);
-    }
+    const p = path.join(process.cwd(), 'public', 'hierarchical_moderator.onnx');
+    _session = await ort.InferenceSession.create(p);
   }
   return _session;
 }
