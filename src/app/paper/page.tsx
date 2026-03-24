@@ -630,7 +630,7 @@ export default function PaperPage() {
                             </span>
                             <span className="text-emerald-300 shrink-0">{t.asset}</span>
                             <span className="text-emerald-500 truncate">
-                              {t.shares.toFixed(4)} sh
+                              ${fmt(t.shares * t.price)}
                             </span>
                           </div>
                           <div className="flex items-center gap-3 shrink-0 ml-2">

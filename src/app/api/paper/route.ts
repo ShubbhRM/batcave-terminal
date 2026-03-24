@@ -313,6 +313,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No active session. Initialise one first.' }, { status: 400 });
     }
 
+    // Block duplicate updates on the same calendar day
+    const today          = new Date().toISOString().slice(0, 10);
+    const lastUpdateDate = state.lastUpdate ? state.lastUpdate.slice(0, 10) : null;
+    if (lastUpdateDate === today) {
+      return NextResponse.json(
+        { error: `Already updated today (${today}). Come back tomorrow for the next snapshot.` },
+        { status: 429 }
+      );
+    }
+
     const session = await getSession();
 
     // Fetch fresh bars for each asset
