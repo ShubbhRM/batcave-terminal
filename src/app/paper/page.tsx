@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, FormEvent } from 'react';
+import { useEffect, useState, useCallback, useRef, FormEvent } from 'react';
 import {
   ShieldAlert, Activity, Clock, RefreshCw, Play,
   RotateCcw, BarChart2, ChevronLeft, Zap, AlertTriangle,
@@ -220,6 +220,8 @@ export default function PaperPage() {
   const [capital,   setCapital]   = useState('10000');
   const [assets,    setAssets]    = useState('SPY,QQQ,AAPL,TSLA,BTC-USD');
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
+  const [autoRun,   setAutoRun]   = useState(false);
+  const updatingRef = useRef(false);
 
   // ── Fetch ────────────────────────────────────────────────────────────────────
   const fetchData = useCallback(async () => {
@@ -237,8 +239,19 @@ export default function PaperPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
+  // ── Auto-run interval ────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!autoRun) return;
+    const id = setInterval(() => {
+      if (!updatingRef.current) handleUpdate();
+    }, 5000);
+    return () => clearInterval(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRun]);
+
   // ── Update ───────────────────────────────────────────────────────────────────
   const handleUpdate = async () => {
+    updatingRef.current = true;
     setUpdating(true);
     setStatusMsg(null);
     try {
@@ -257,6 +270,7 @@ export default function PaperPage() {
         setStatusMsg(`Error: ${json.error}`);
       }
     } finally {
+      updatingRef.current = false;
       setUpdating(false);
     }
   };
@@ -359,6 +373,16 @@ export default function PaperPage() {
                   className="flex items-center gap-2 border border-emerald-700/50 bg-emerald-950/30 px-4 py-2 rounded text-sm text-emerald-300 hover:bg-emerald-900/30 transition-colors disabled:opacity-50">
                   <RefreshCw className={clsx('w-4 h-4', updating && 'animate-spin')} />
                   {updating ? 'UPDATING...' : 'UPDATE NOW'}
+                </button>
+                <button onClick={() => setAutoRun(v => !v)}
+                  className={clsx(
+                    'flex items-center gap-2 border px-4 py-2 rounded text-sm transition-colors',
+                    autoRun
+                      ? 'border-amber-600/60 bg-amber-950/30 text-amber-300 hover:bg-amber-900/30'
+                      : 'border-emerald-900/40 bg-emerald-950/20 text-emerald-500 hover:text-emerald-300'
+                  )}>
+                  <span className={clsx('w-2 h-2 rounded-full', autoRun ? 'bg-amber-400 animate-pulse' : 'bg-emerald-800')} />
+                  {autoRun ? 'AUTO ON' : 'AUTO'}
                 </button>
                 <button onClick={() => setShowInit(true)}
                   className="flex items-center gap-2 border border-emerald-900/40 bg-emerald-950/20 px-3 py-2 rounded text-sm text-emerald-500 hover:text-emerald-300 transition-colors">
