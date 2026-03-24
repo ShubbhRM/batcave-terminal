@@ -95,7 +95,7 @@ function ExpertCard({
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Icon className="w-4 h-4" style={{ color }} />
-            <span className="text-sm tracking-widest uppercase" style={{ color: `${color}aa` }}>
+            <span className="text-sm tracking-widest uppercase" style={{ color }}>
               {label}
             </span>
           </div>
@@ -112,7 +112,7 @@ function ExpertCard({
           style={{ width: `${value * 100}%`, backgroundColor: color, boxShadow: `0 0 8px ${color}` }} />
       </div>
 
-      <p className="text-sm leading-relaxed text-slate-400">{desc}</p>
+      <p className="text-sm leading-relaxed text-slate-300">{desc}</p>
     </div>
   );
 }
@@ -132,7 +132,7 @@ function RegimeBadge({ weights }: { weights: SignalData['weights'] }) {
         style={{ backgroundColor: dom.color, boxShadow: `0 0 8px ${dom.color}` }} />
       <div>
         <div className="text-xs tracking-widest uppercase mb-1"
-          style={{ color: `${dom.color}88` }}>Active Regime</div>
+          style={{ color: `${dom.color}cc` }}>Active Regime</div>
         <div className="text-base font-bold" style={{ color: dom.color }}>
           {dom.label.toUpperCase()} — {actionMap[dom.key]}
         </div>
@@ -150,7 +150,7 @@ function AllocationBars({ weights }: { weights: SignalData['weights'] }) {
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <e.Icon className="w-3.5 h-3.5" style={{ color: e.color }} />
-              <span className="text-sm tracking-wide" style={{ color: `${e.color}bb` }}>
+              <span className="text-sm tracking-wide font-semibold" style={{ color: e.color }}>
                 {e.label.toUpperCase()}
               </span>
             </div>
@@ -236,7 +236,7 @@ export default function Dashboard() {
                   v5.0
                 </span>
               </div>
-              <div className="text-xs text-slate-500 tracking-widest mt-1">
+              <div className="text-xs text-slate-400 tracking-widest mt-1">
                 HIERARCHICAL RL · 3-EXPERT LSTM ENSEMBLE · ONNX
               </div>
             </div>
@@ -280,7 +280,7 @@ export default function Dashboard() {
             </div>
 
             {lastUpdate && (
-              <span className="text-xs text-slate-600">{lastUpdate}</span>
+              <span className="text-xs text-slate-400">{lastUpdate}</span>
             )}
           </div>
         </header>
@@ -325,7 +325,7 @@ export default function Dashboard() {
 
               {/* Ticker card */}
               <div className="card rounded-xl border border-slate-700/60 bg-[#080f0a] p-7 animate-slide-up">
-                <div className="text-xs tracking-widest uppercase text-slate-400 mb-5">
+                <div className="text-xs tracking-widest uppercase text-slate-300 mb-5">
                   Target Asset
                 </div>
                 <div className="text-5xl font-bold tracking-tight mb-3 text-white">{data.symbol}</div>
@@ -333,27 +333,27 @@ export default function Dashboard() {
                   style={{ textShadow: '0 0 24px rgba(52,211,153,0.35)' }}>
                   ${data.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
-                <div className="space-y-3 border-t border-slate-700/40 pt-5 text-sm text-slate-500">
+                <div className="space-y-3 border-t border-slate-700/40 pt-5 text-sm text-slate-400">
                   <div className="flex justify-between">
                     <span>Engine</span>
-                    <span className="text-slate-300 flex items-center gap-1.5">
-                      <Zap className="w-3.5 h-3.5 text-emerald-600" /> LSTM-256
+                    <span className="text-slate-200 flex items-center gap-1.5">
+                      <Zap className="w-3.5 h-3.5 text-emerald-400" /> LSTM-256
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Experts</span>
-                    <span className="text-slate-300">3-expert ensemble</span>
+                    <span className="text-slate-200">3-expert ensemble</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Refresh</span>
-                    <span className="text-slate-300">every 60 s</span>
+                    <span className="text-slate-200">every 60 s</span>
                   </div>
                 </div>
               </div>
 
               {/* Allocation panel */}
               <div className="card md:col-span-2 rounded-xl border border-slate-700/60 bg-[#080f0a] p-7 animate-slide-up delay-100">
-                <div className="text-xs tracking-widest uppercase text-slate-400 mb-6">
+                <div className="text-xs tracking-widest uppercase text-slate-300 mb-6">
                   Expert Allocation
                 </div>
                 <AllocationBars weights={data.weights} />
@@ -374,7 +374,7 @@ export default function Dashboard() {
         )}
 
         {/* ── Footer ─────────────────────────────────────────────────────── */}
-        <footer className="mt-16 pt-6 border-t border-slate-700/40 flex flex-wrap justify-between items-center gap-3 text-sm text-slate-500">
+        <footer className="mt-16 pt-6 border-t border-slate-700/40 flex flex-wrap justify-between items-center gap-3 text-sm text-slate-400">
           <span>BATCAVE TERMINAL v5.0 · RecurrentPPO · Sortino Reward · 1M steps</span>
           <span className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse-dot" />

@@ -6,8 +6,8 @@ body {
   background-color: #060d09;          /* dark green-tinted black */
   color: #d4e8da;                     /* warm green-white for better contrast */
   font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 15.5px;
+  line-height: 1.65;
 }
 
 /* ── Keyframes ─────────────────────────────────────────────────────────────── */

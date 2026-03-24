@@ -83,10 +83,10 @@ function TerminalBoot() {
   }, []);
   return (
     <div className="h-80 border border-emerald-800/40 bg-emerald-950/10 rounded-lg p-7 flex flex-col justify-center">
-      <div className="text-sm text-emerald-600 tracking-widest uppercase mb-6">// BACKTESTING ENGINE</div>
+      <div className="text-sm text-emerald-400 tracking-widest uppercase mb-6">// BACKTESTING ENGINE</div>
       <div className="space-y-2">
         {lines.map((line, i) => (
-          <div key={i} className="text-sm text-emerald-700 flex items-center gap-3 animate-data-in">
+          <div key={i} className="text-sm text-emerald-400 flex items-center gap-3 animate-data-in">
             <span className="text-emerald-500 shrink-0">▶</span>
             <span>{line}</span>
             {i === lines.length - 1 && <span className="animate-blink text-emerald-400 ml-1">▌</span>}
@@ -164,7 +164,7 @@ function EquityCurve({ timeline, amount }: { timeline: TimelinePoint[]; amount: 
               <line x1={PL} y1={y} x2={W - PR} y2={y}
                 stroke="rgba(16,185,129,0.07)" strokeWidth="1" strokeDasharray="3 5" />
               <text x={PL - 4} y={y + 3.5} textAnchor="end"
-                fill="rgba(16,185,129,0.25)" fontSize="8.5" fontFamily="monospace">
+                fill="rgba(16,185,129,0.55)" fontSize="8.5" fontFamily="monospace">
                 {fmt(val)}
               </text>
             </g>
@@ -193,13 +193,13 @@ function EquityCurve({ timeline, amount }: { timeline: TimelinePoint[]; amount: 
         <line x1={PL} y1={PT} x2={PL} y2={PT + IH} stroke="rgba(16,185,129,0.12)" strokeWidth="1" />
 
         {/* Date labels */}
-        <text x={PL} y={H - 4} textAnchor="start" fill="rgba(16,185,129,0.25)" fontSize="8.5" fontFamily="monospace">{startDate}</text>
-        <text x={PL + IW / 2} y={H - 4} textAnchor="middle" fill="rgba(16,185,129,0.18)" fontSize="8.5" fontFamily="monospace">{midDate}</text>
-        <text x={W - PR} y={H - 4} textAnchor="end" fill="rgba(16,185,129,0.25)" fontSize="8.5" fontFamily="monospace">{endDate}</text>
+        <text x={PL} y={H - 4} textAnchor="start" fill="rgba(16,185,129,0.55)" fontSize="8.5" fontFamily="monospace">{startDate}</text>
+        <text x={PL + IW / 2} y={H - 4} textAnchor="middle" fill="rgba(16,185,129,0.45)" fontSize="8.5" fontFamily="monospace">{midDate}</text>
+        <text x={W - PR} y={H - 4} textAnchor="end" fill="rgba(16,185,129,0.55)" fontSize="8.5" fontFamily="monospace">{endDate}</text>
       </svg>
 
       {/* Legend */}
-      <div className="flex items-center gap-6 mt-2 text-sm text-emerald-700">
+      <div className="flex items-center gap-6 mt-2 text-sm text-emerald-400">
         <span className="flex items-center gap-2">
           <svg width="22" height="6"><line x1="0" y1="3" x2="22" y2="3" stroke={lineColor} strokeWidth="2"/></svg>
           Portfolio
@@ -239,13 +239,13 @@ function RegimeHeatmap({ timeline }: { timeline: TimelinePoint[] }) {
   return (
     <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg p-5 card-tactical">
       <div className="flex justify-between items-center mb-4">
-        <div className="text-xs tracking-[0.2em] uppercase text-emerald-700">Regime Heatmap</div>
+        <div className="text-xs tracking-[0.2em] uppercase text-emerald-400">Regime Heatmap</div>
         <div className="flex items-center gap-5">
           {(Object.keys(REGIME) as (keyof typeof REGIME)[]).map(r => (
-            <span key={r} className="flex items-center gap-1.5 text-sm text-emerald-700">
+            <span key={r} className="flex items-center gap-1.5 text-sm text-emerald-400">
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: REGIME[r].color, boxShadow: `0 0 4px ${REGIME[r].color}` }} />
               {REGIME[r].label}
-              <span className="tabular-nums" style={{ color: `${REGIME[r].color}88` }}>
+              <span className="tabular-nums font-bold" style={{ color: REGIME[r].color }}>
                 {((tally[r] / total) * 100).toFixed(0)}%
               </span>
             </span>
@@ -268,7 +268,7 @@ function RegimeHeatmap({ timeline }: { timeline: TimelinePoint[] }) {
         ))}
       </div>
 
-      <div className="flex justify-between text-sm text-emerald-700/40 mt-2">
+      <div className="flex justify-between text-sm text-emerald-400/40 mt-2">
         <span>{timeline[0]?.timestamp.split('T')[0]}</span>
         <span>{timeline[timeline.length - 1]?.timestamp.split('T')[0]}</span>
       </div>
@@ -286,12 +286,12 @@ function MetricCard({
   return (
     <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg p-4 card-tactical relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-px" style={{ backgroundColor: color, opacity: 0.3 }} />
-      <div className="text-xs tracking-[0.15em] uppercase text-emerald-700 mb-2">{label}</div>
+      <div className="text-xs tracking-[0.15em] uppercase text-emerald-400 mb-2">{label}</div>
       <div className={clsx('font-bold tabular-nums leading-none', large ? 'text-2xl' : 'text-xl')}
         style={{ color, textShadow: `0 0 16px ${color}50` }}>
         {value}
       </div>
-      {sub && <div className="text-xs mt-1" style={{ color: `${color}66` }}>{sub}</div>}
+      {sub && <div className="text-xs mt-1" style={{ color: `${color}bb` }}>{sub}</div>}
     </div>
   );
 }
@@ -374,11 +374,11 @@ export default function SimulatePage() {
             <h1 className="text-xl font-bold text-emerald-300 glow-emerald flex items-center gap-2 tracking-wide">
               <BarChart2 className="w-5 h-5" /> PORTFOLIO SIMULATOR
             </h1>
-            <p className="text-emerald-700 text-xs mt-1 tracking-[0.2em] uppercase">
+            <p className="text-emerald-400 text-xs mt-1 tracking-[0.2em] uppercase">
               Hierarchical RL Engine // Historical Backtest Replay
             </p>
           </div>
-          <a href="/" className="text-sm text-emerald-700 hover:text-emerald-400 border border-emerald-800/40 hover:border-emerald-700 px-3 py-1.5 rounded transition-colors">
+          <a href="/" className="text-sm text-emerald-400 hover:text-emerald-400 border border-emerald-800/40 hover:border-emerald-700 px-3 py-1.5 rounded transition-colors">
             ← LIVE DASHBOARD
           </a>
         </header>
@@ -389,12 +389,12 @@ export default function SimulatePage() {
 
             {/* Parameters form */}
             <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg p-5 space-y-5 card-tactical">
-              <div className="text-xs tracking-[0.2em] uppercase text-emerald-700">Simulation Parameters</div>
+              <div className="text-xs tracking-[0.2em] uppercase text-emerald-400">Simulation Parameters</div>
 
               <div>
-                <label className="text-sm text-emerald-600 mb-1.5 block">Initial Investment (USD)</label>
+                <label className="text-sm text-emerald-400 mb-1.5 block">Initial Investment (USD)</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-600"><DollarSign className="w-4 h-4" /></span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-400"><DollarSign className="w-4 h-4" /></span>
                   <input type="number" min="100" step="100" value={amount}
                     onChange={e => setAmount(e.target.value)}
                     className="w-full bg-emerald-950/10 border border-emerald-900/40 rounded pl-9 pr-4 py-2.5 text-emerald-300 focus:outline-none focus:border-emerald-600 transition-colors text-sm" />
@@ -402,16 +402,16 @@ export default function SimulatePage() {
               </div>
 
               <div>
-                <label className="text-sm text-emerald-600 mb-1.5 block flex items-center gap-2">
+                <label className="text-sm text-emerald-400 mb-1.5 block flex items-center gap-2">
                   <Clock className="w-3 h-3" /> Start Date
-                  <span className="text-emerald-700/60">(adjusts to next trading day)</span>
+                  <span className="text-emerald-400/60">(adjusts to next trading day)</span>
                 </label>
                 <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
                   className="w-full bg-emerald-950/10 border border-emerald-900/40 rounded px-4 py-2.5 text-emerald-300 focus:outline-none focus:border-emerald-600 transition-colors text-sm" />
               </div>
 
               <div>
-                <label className="text-sm text-emerald-600 mb-2 block">Assets <span className="text-emerald-700/60">(max 5)</span></label>
+                <label className="text-sm text-emerald-400 mb-2 block">Assets <span className="text-emerald-400/60">(max 5)</span></label>
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {PRESET_ASSETS.map(a => (
                     <button key={a} type="button"
@@ -419,7 +419,7 @@ export default function SimulatePage() {
                       className={clsx('px-2.5 py-1 rounded text-xs border transition-all',
                         selectedAssets.includes(a)
                           ? 'bg-emerald-900/30 border-emerald-600/60 text-emerald-300'
-                          : 'border-emerald-800/40 text-emerald-700 hover:border-emerald-800 hover:text-emerald-700')}>
+                          : 'border-emerald-800/40 text-emerald-400 hover:border-emerald-800 hover:text-emerald-400')}>
                       {a}
                     </button>
                   ))}
@@ -430,13 +430,13 @@ export default function SimulatePage() {
                     className="flex-1 bg-emerald-950/10 border border-emerald-900/40 rounded px-3 py-1.5 text-sm text-emerald-300 focus:outline-none focus:border-emerald-600 transition-colors" />
                   <button type="button"
                     onClick={() => { if (customAsset && selectedAssets.length < 5) { setAssets(p => [...p, customAsset]); setCustom(''); } }}
-                    className="px-3 py-1.5 border border-emerald-800/50 rounded text-sm text-emerald-700 hover:bg-emerald-900/20 transition-colors">Add</button>
+                    className="px-3 py-1.5 border border-emerald-800/50 rounded text-sm text-emerald-400 hover:bg-emerald-900/20 transition-colors">Add</button>
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
                   {selectedAssets.map(a => (
                     <span key={a} className="flex items-center gap-1 text-xs px-2 py-0.5 rounded border border-emerald-800/40 bg-emerald-950/20 text-emerald-500">
                       {a}
-                      <button type="button" onClick={() => setAssets(p => p.filter(x => x !== a))} className="text-emerald-600 hover:text-red-400 ml-0.5">×</button>
+                      <button type="button" onClick={() => setAssets(p => p.filter(x => x !== a))} className="text-emerald-400 hover:text-red-400 ml-0.5">×</button>
                     </span>
                   ))}
                 </div>
@@ -457,7 +457,7 @@ export default function SimulatePage() {
             {/* Summary card */}
             {results && (
               <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg p-5 card-tactical animate-slide-up">
-                <div className="text-xs tracking-[0.2em] uppercase text-emerald-700 mb-4">Final Summary</div>
+                <div className="text-xs tracking-[0.2em] uppercase text-emerald-400 mb-4">Final Summary</div>
                 <div className="space-y-2.5">
                   {([
                     ['Start Date',   results.startDate,  undefined],
@@ -471,7 +471,7 @@ export default function SimulatePage() {
                     ['Win Rate',     `${results.summary.winRate}%`, results.summary.winRate >= 50],
                   ] as [string, string, boolean | undefined][]).map(([label, val, pos]) => (
                     <div key={label} className="flex justify-between items-center py-1.5 border-b border-emerald-900/15 last:border-0">
-                      <span className="text-sm text-emerald-700">{label}</span>
+                      <span className="text-sm text-emerald-400">{label}</span>
                       <span className={clsx('text-xs font-semibold tabular-nums',
                         pos === true  ? 'text-emerald-400' :
                         pos === false ? 'text-red-400' :
@@ -494,7 +494,7 @@ export default function SimulatePage() {
 
             {/* Empty / loading state */}
             {!results && !loading && (
-              <div className="h-96 border border-emerald-900/20 bg-emerald-950/10 rounded-lg flex flex-col items-center justify-center text-emerald-700 gap-4">
+              <div className="h-96 border border-emerald-900/20 bg-emerald-950/10 rounded-lg flex flex-col items-center justify-center text-emerald-400 gap-4">
                 <BarChart2 className="w-14 h-14 opacity-40" />
                 <p className="text-sm tracking-widest uppercase">Configure parameters and run a simulation</p>
               </div>
@@ -508,7 +508,7 @@ export default function SimulatePage() {
                   {/* Portfolio value */}
                   <div className={clsx('border rounded-lg p-4 bg-[#060d09] card-tactical relative overflow-hidden', isPositive ? 'border-emerald-900/40' : 'border-red-900/40')}>
                     <div className="absolute inset-x-0 top-0 h-px" style={{ backgroundColor: isPositive ? '#10b981' : '#ef4444', opacity: 0.4 }} />
-                    <div className="text-xs tracking-[0.15em] uppercase text-emerald-700 mb-2">Portfolio Value</div>
+                    <div className="text-xs tracking-[0.15em] uppercase text-emerald-400 mb-2">Portfolio Value</div>
                     <div className="text-xl font-bold tabular-nums leading-tight"
                       style={{ color: isPositive ? '#10b981' : '#ef4444', textShadow: `0 0 16px ${isPositive ? '#10b98150' : '#ef444450'}` }}>
                       ${(currentValue ?? results.amount).toLocaleString('en-US', { maximumFractionDigits: 0 })}
@@ -517,7 +517,7 @@ export default function SimulatePage() {
 
                   {/* P&L */}
                   <div className={clsx('border rounded-lg p-4 bg-[#060d09] card-tactical', isPositive ? 'border-emerald-900/40' : 'border-red-900/40')}>
-                    <div className="text-xs tracking-[0.15em] uppercase text-emerald-700 mb-2">P&amp;L</div>
+                    <div className="text-xs tracking-[0.15em] uppercase text-emerald-400 mb-2">P&amp;L</div>
                     <div className={clsx('text-xl font-bold flex items-center gap-1 tabular-nums', isPositive ? 'text-emerald-400' : 'text-red-400')}
                       style={{ textShadow: `0 0 14px ${isPositive ? '#10b98140' : '#ef444440'}` }}>
                       {isPositive ? <TrendingUp className="w-4 h-4 shrink-0" /> : <TrendingDown className="w-4 h-4 shrink-0" />}
@@ -530,7 +530,7 @@ export default function SimulatePage() {
 
                   {/* Expert weights */}
                   <div className="border border-emerald-800/40 rounded-lg p-4 bg-[#060d09] card-tactical">
-                    <div className="text-xs tracking-[0.15em] uppercase text-emerald-700 mb-3">Expert Weights</div>
+                    <div className="text-xs tracking-[0.15em] uppercase text-emerald-400 mb-3">Expert Weights</div>
                     {currentEvent ? (
                       <div className="space-y-2">
                         {(['momentum', 'meanReversion', 'volume'] as const).map(key => {
@@ -548,14 +548,14 @@ export default function SimulatePage() {
                           );
                         })}
                       </div>
-                    ) : <span className="text-sm text-emerald-700">Press play to begin</span>}
+                    ) : <span className="text-sm text-emerald-400">Press play to begin</span>}
                   </div>
                 </div>
 
                 {/* Equity curve */}
                 <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg p-5 card-tactical">
                   <div className="flex justify-between items-center mb-4">
-                    <div className="text-xs tracking-[0.2em] uppercase text-emerald-700">Equity Curve</div>
+                    <div className="text-xs tracking-[0.2em] uppercase text-emerald-400">Equity Curve</div>
                     {results.summary.alpha !== undefined && (
                       <div className={clsx('text-xs px-2.5 py-1 rounded border tabular-nums',
                         results.summary.alpha >= 0
@@ -583,17 +583,17 @@ export default function SimulatePage() {
                     {playing ? <><Pause className="w-4 h-4" />Pause</> : <><Play className="w-4 h-4" />Play</>}
                   </button>
                   <button onClick={restart}
-                    className="flex items-center gap-2 px-4 py-2 border border-emerald-800/40 rounded text-emerald-600 hover:text-emerald-500 hover:border-emerald-700 transition-all text-sm">
+                    className="flex items-center gap-2 px-4 py-2 border border-emerald-800/40 rounded text-emerald-400 hover:text-emerald-500 hover:border-emerald-700 transition-all text-sm">
                     <RotateCcw className="w-4 h-4" /> Restart
                   </button>
                   <div className="ml-auto flex items-center gap-1.5">
-                    <span className="text-sm text-emerald-700 mr-1">SPEED</span>
+                    <span className="text-sm text-emerald-400 mr-1">SPEED</span>
                     {SPEEDS.map((s, i) => (
                       <button key={s} onClick={() => setSpeed(s)}
                         className={clsx('px-2.5 py-1 rounded text-xs border transition-all',
                           speed === s
                             ? 'bg-emerald-900/30 border-emerald-600/60 text-emerald-300'
-                            : 'border-emerald-800/40 text-emerald-700 hover:border-emerald-800')}>
+                            : 'border-emerald-800/40 text-emerald-400 hover:border-emerald-800')}>
                         {SPEED_LABELS[i]}
                       </button>
                     ))}
@@ -603,14 +603,14 @@ export default function SimulatePage() {
                 {/* Trade event log */}
                 <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg overflow-hidden card-tactical">
                   <div className="px-5 py-3 border-b border-emerald-900/20 flex justify-between items-center">
-                    <span className="text-xs tracking-[0.15em] uppercase text-emerald-700">Trade Event Log</span>
-                    <span className="text-sm text-emerald-700/40 tabular-nums">
-                      {visibleEvents.length} <span className="text-emerald-700/20">/</span> {results.events.length}
+                    <span className="text-xs tracking-[0.15em] uppercase text-emerald-400">Trade Event Log</span>
+                    <span className="text-sm text-emerald-400/40 tabular-nums">
+                      {visibleEvents.length} <span className="text-emerald-400/20">/</span> {results.events.length}
                     </span>
                   </div>
                   <div ref={logRef} className="h-56 overflow-y-auto p-3 space-y-1">
                     {visibleEvents.length === 0 && (
-                      <div className="text-center text-emerald-700/40 text-xs pt-10 tracking-widest uppercase">
+                      <div className="text-center text-emerald-400/40 text-xs pt-10 tracking-widest uppercase">
                         Press play to replay simulation…
                       </div>
                     )}
@@ -623,14 +623,14 @@ export default function SimulatePage() {
                           <span className="font-bold shrink-0 w-16 tabular-nums" style={{ color: col }}>
                             {ev.action}
                           </span>
-                          <span className="shrink-0 text-emerald-600 tabular-nums">
+                          <span className="shrink-0 text-emerald-400 tabular-nums">
                             {ev.shares.toFixed(2)}
                           </span>
                           <span className="font-medium shrink-0" style={{ color: col + 'cc' }}>
                             {ev.asset}
                           </span>
-                          <span className="text-emerald-700 tabular-nums">@ ${ev.price.toFixed(2)}</span>
-                          <span className="ml-auto text-emerald-700/60 tabular-nums shrink-0">
+                          <span className="text-emerald-400 tabular-nums">@ ${ev.price.toFixed(2)}</span>
+                          <span className="ml-auto text-emerald-400/60 tabular-nums shrink-0">
                             ${ev.portfolioValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                           </span>
                         </div>
@@ -642,7 +642,7 @@ export default function SimulatePage() {
                 {/* Asset allocation */}
                 {currentEvent && (
                   <div className="border border-emerald-800/40 bg-[#060d09] rounded-lg p-5 card-tactical">
-                    <div className="text-xs tracking-[0.2em] uppercase text-emerald-700 mb-4">Portfolio Allocation</div>
+                    <div className="text-xs tracking-[0.2em] uppercase text-emerald-400 mb-4">Portfolio Allocation</div>
                     <div className="space-y-3">
                       {Object.entries(currentEvent.allocation)
                         .sort(([, a], [, b]) => b - a)
@@ -656,10 +656,10 @@ export default function SimulatePage() {
                                 <div className="h-full rounded-full transition-all duration-700"
                                   style={{ width: `${pct.toFixed(1)}%`, backgroundColor: '#10b981', boxShadow: '0 0 6px #10b98160' }} />
                               </div>
-                              <span className="text-emerald-600 text-xs tabular-nums w-20 text-right">
+                              <span className="text-emerald-400 text-xs tabular-nums w-20 text-right">
                                 ${val.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                               </span>
-                              <span className="text-emerald-700 text-xs tabular-nums w-10 text-right">{pct.toFixed(1)}%</span>
+                              <span className="text-emerald-400 text-xs tabular-nums w-10 text-right">{pct.toFixed(1)}%</span>
                             </div>
                           );
                         })}
@@ -672,7 +672,7 @@ export default function SimulatePage() {
         </div>
 
         {/* ── Footer ─────────────────────────────────────────────────────── */}
-        <footer className="mt-16 border-t border-emerald-900/20 pt-6 text-sm text-emerald-700/40 flex justify-between items-center">
+        <footer className="mt-16 border-t border-emerald-900/20 pt-6 text-sm text-emerald-400/40 flex justify-between items-center">
           <span className="tracking-widest uppercase">BATCAVE TERMINAL v5.0 // Portfolio Simulator</span>
           <span suppressHydrationWarning className="tabular-nums">{new Date().toISOString()}</span>
         </footer>
