@@ -313,14 +313,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No active session. Initialise one first.' }, { status: 400 });
     }
 
-    // Block duplicate updates on the same calendar day
-    const today          = new Date().toISOString().slice(0, 10);
-    const lastUpdateDate = state.lastUpdate ? state.lastUpdate.slice(0, 10) : null;
-    if (lastUpdateDate === today) {
-      return NextResponse.json(
-        { error: `Already updated today (${today}). Come back tomorrow for the next snapshot.` },
-        { status: 429 }
-      );
+    // Throttle: allow at most one update per 30 minutes
+    if (state.lastUpdate) {
+      const msSince = Date.now() - new Date(state.lastUpdate).getTime();
+      if (msSince < 30 * 60 * 1000) {
+        const minsLeft = Math.ceil((30 * 60 * 1000 - msSince) / 60000);
+        return NextResponse.json(
+          { error: `Updated too recently. Wait ${minsLeft} more minute(s) before the next snapshot.` },
+          { status: 429 }
+        );
+      }
     }
 
     const session = await getSession();

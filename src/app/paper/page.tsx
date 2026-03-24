@@ -51,11 +51,18 @@ interface PaperData {
 }
 
 // ─── Equity Curve ─────────────────────────────────────────────────────────────
-function EquityCurve({ snapshots, startCapital }: {
+function EquityCurve({ snapshots, startCapital, startDate }: {
   snapshots:    PaperSnapshot[];
   startCapital: number;
+  startDate:    string;
 }) {
-  if (snapshots.length < 2) {
+  // Prepend the start-capital baseline so even 1 snapshot draws a line
+  const points = [
+    { date: startDate, portfolioValue: startCapital, benchmarkValue: startCapital },
+    ...snapshots,
+  ];
+
+  if (points.length < 2) {
     return (
       <div className="flex flex-col items-center justify-center h-48 gap-3 text-emerald-500">
         <Activity className="w-8 h-8 opacity-30" />
@@ -70,9 +77,9 @@ function EquityCurve({ snapshots, startCapital }: {
   const pad = { top: 20, right: 24, bottom: 36, left: 68 };
   const cW  = W - pad.left - pad.right;
   const cH  = H - pad.top  - pad.bottom;
-  const n   = snapshots.length;
+  const n   = points.length;
 
-  const allVals = snapshots.flatMap(s => [s.portfolioValue, s.benchmarkValue]);
+  const allVals = points.flatMap(s => [s.portfolioValue, s.benchmarkValue]);
   const rawMin  = Math.min(...allVals);
   const rawMax  = Math.max(...allVals);
   const pad5    = (rawMax - rawMin) * 0.06 || 100;
@@ -83,8 +90,8 @@ function EquityCurve({ snapshots, startCapital }: {
   const xS = (i: number) => pad.left + (i / (n - 1)) * cW;
   const yS = (v: number) => pad.top  + cH - ((v - minV) / range) * cH;
 
-  const portPts  = snapshots.map((s, i) => `${xS(i)},${yS(s.portfolioValue)}`).join(' ');
-  const benchPts = snapshots.map((s, i) => `${xS(i)},${yS(s.benchmarkValue)}`).join(' ');
+  const portPts  = points.map((s, i) => `${xS(i)},${yS(s.portfolioValue)}`).join(' ');
+  const benchPts = points.map((s, i) => `${xS(i)},${yS(s.benchmarkValue)}`).join(' ');
   const endX     = xS(n - 1);
   const baseY    = yS(minV);
   const startY   = yS(startCapital);
@@ -96,7 +103,7 @@ function EquityCurve({ snapshots, startCapital }: {
   const fmt = (d: string) =>
     new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const midIdx  = Math.floor(n / 2);
-  const midDate = n > 5 ? fmt(snapshots[midIdx].date) : null;
+  const midDate = n > 5 ? fmt(points[midIdx].date) : null;
 
   // Dollar label formatter
   const money = (v: number) =>
@@ -157,12 +164,12 @@ function EquityCurve({ snapshots, startCapital }: {
         stroke="#10b981" strokeWidth="2.5" filter="url(#ec-glow)" />
 
       {/* End dot */}
-      <circle cx={endX} cy={yS(snapshots[n - 1].portfolioValue)} r="4"
+      <circle cx={endX} cy={yS(points[n - 1].portfolioValue)} r="4"
         fill="#10b981" filter="url(#ec-glow)" />
 
       {/* X-axis date labels */}
       <text x={pad.left}          y={H - 6} fontSize="9" fill="rgba(16,185,129,0.4)" fontFamily="monospace">
-        {fmt(snapshots[0].date)}
+        {fmt(points[0].date)}
       </text>
       {midDate && (
         <text x={W / 2} y={H - 6} textAnchor="middle" fontSize="9" fill="rgba(16,185,129,0.28)" fontFamily="monospace">
@@ -170,7 +177,7 @@ function EquityCurve({ snapshots, startCapital }: {
         </text>
       )}
       <text x={W - pad.right} y={H - 6} textAnchor="end" fontSize="9" fill="rgba(16,185,129,0.4)" fontFamily="monospace">
-        {fmt(snapshots[n - 1].date)}
+        {fmt(points[n - 1].date)}
       </text>
 
       {/* Legend */}
@@ -529,7 +536,7 @@ export default function PaperPage() {
                   </div>
                 </div>
               </div>
-              <EquityCurve snapshots={data.snapshots} startCapital={data.startCapital} />
+              <EquityCurve snapshots={data.snapshots} startCapital={data.startCapital} startDate={data.startDate} />
             </div>
 
             {/* ── Positions + Trades ───────────────────────────────────────── */}
@@ -614,36 +621,37 @@ export default function PaperPage() {
                     </span>
                   </div>
                 ) : (
-                  <div className="space-y-0.5 max-h-72 overflow-y-auto pr-1">
-                    {/* Most recent first */}
-                    {[...data.trades].reverse().slice(0, 30).map((t, i) => {
-                      const ac =
-                        t.action === 'BUY'       ? '#10b981'
-                        : t.action === 'SELL'     ? '#ef4444'
-                        : '#f59e0b';
-                      return (
-                        <div key={i}
-                          className="flex items-center justify-between py-2 border-b border-emerald-900/10 last:border-0 text-xs">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="font-bold w-16 shrink-0" style={{ color: ac }}>
-                              {t.action}
-                            </span>
-                            <span className="text-emerald-300 shrink-0">{t.asset}</span>
-                            <span className="text-emerald-500 truncate">
-                              ${fmt(t.shares * t.price)}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-3 shrink-0 ml-2">
-                            <span className="text-emerald-500">${fmt(t.price)}</span>
-                            <span className="text-emerald-500 w-20 text-right">
-                              {new Date(t.date).toLocaleDateString('en-US', {
-                                month: 'short', day: 'numeric',
-                              })}
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div className="max-h-72 overflow-y-auto">
+                    <table className="w-full text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b border-emerald-800/40">
+                          <th className="text-left py-2 pr-4 text-emerald-500 font-normal tracking-widest uppercase">Date</th>
+                          <th className="text-left py-2 pr-4 text-emerald-500 font-normal tracking-widest uppercase">Asset</th>
+                          <th className="text-left py-2 pr-4 text-emerald-500 font-normal tracking-widest uppercase">Action</th>
+                          <th className="text-right py-2 pr-4 text-emerald-500 font-normal tracking-widest uppercase">Trade Value</th>
+                          <th className="text-right py-2 text-emerald-500 font-normal tracking-widest uppercase">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...data.trades].reverse().slice(0, 30).map((t, i) => {
+                          const ac =
+                            t.action === 'BUY'      ? 'text-emerald-400'
+                            : t.action === 'SELL'   ? 'text-red-400'
+                            : 'text-amber-400';
+                          return (
+                            <tr key={i} className="border-b border-emerald-900/10 last:border-0 hover:bg-emerald-950/30 transition-colors">
+                              <td className="py-2.5 pr-4 text-emerald-500">
+                                {new Date(t.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                              </td>
+                              <td className="py-2.5 pr-4 text-emerald-300 font-bold">{t.asset}</td>
+                              <td className={`py-2.5 pr-4 font-bold tracking-wider ${ac}`}>{t.action}</td>
+                              <td className="py-2.5 pr-4 text-right text-emerald-300 tabular-nums">${fmt(t.shares * t.price)}</td>
+                              <td className="py-2.5 text-right text-emerald-500 tabular-nums">${fmt(t.price)}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>
